@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Золотое кольцо России</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+        }
+        .header {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--tg-theme-bg-color, #fff);
+            border-bottom: 1px solid var(--tg-theme-hint-color, #ccc);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5em;
+            color: var(--tg-theme-text-color, #000);
+        }
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+        .city-card {
+            background-color: var(--tg-theme-bg-color, #fff);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid var(--tg-theme-hint-color, #ccc);
+        }
+        .city-card:hover {
+            transform: translateY(-2px);
+        }
+        .city-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--tg-theme-text-color, #000);
+        }
+        .city-description {
+            color: var(--tg-theme-hint-color, #666);
+            font-size: 0.8em;
+        }
+        .places-list {
+            padding: 10px;
+        }
+        .place-card {
+            background-color: var(--tg-theme-bg-color, #fff);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid var(--tg-theme-hint-color, #ccc);
+        }
+        .place-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--tg-theme-text-color, #000);
+        }
+        .place-info {
+            color: var(--tg-theme-hint-color, #666);
+            margin-bottom: 4px;
+            font-size: 0.9em;
+        }
+        .rating {
+            color: var(--tg-theme-link-color, #f39c12);
+            font-weight: bold;
+        }
+        .comments {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--tg-theme-hint-color, #eee);
+        }
+        .comment {
+            background-color: var(--tg-theme-secondary-bg-color, #f9f9f9);
+            padding: 8px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .add-place-form {
+            padding: 15px;
+            background-color: var(--tg-theme-bg-color, #fff);
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--tg-theme-text-color, #000);
+            font-size: 0.9em;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+        }
+        button {
+            background-color: var(--tg-theme-button-color, #4CAF50);
+            color: var(--tg-theme-button-text-color, #fff);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .success {
+            background-color: var(--tg-theme-secondary-bg-color, #dff0d8);
+            color: var(--tg-theme-text-color, #3c763d);
+        }
+        .error {
+            background-color: var(--tg-theme-secondary-bg-color, #f2dede);
+            color: var(--tg-theme-text-color, #a94442);
+        }
+        .back-button {
+            background-color: var(--tg-theme-button-color, #666);
+            margin-bottom: 15px;
+        }
+        .rating-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .rating-button {
+            flex: 1;
+            padding: 8px;
+            font-size: 1.2em;
+        }
+        .comment-form {
+            margin-top: 10px;
+        }
+        .comment-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Золотое кольцо России</h1>
+    </div>
+
+    <div id="cities-container">
+        <div class="cities-grid" id="cities-grid">
+            <!-- Города будут добавлены через JavaScript -->
+        </div>
+    </div>
+
+    <div id="places-container" style="display: none;">
+        <button class="back-button" onclick="showCities()">← Назад к городам</button>
+        <h2 id="city-title"></h2>
+        <p id="city-description"></p>
+        <div id="places-list" class="places-list">
+            <!-- Достопримечательности будут добавлены через JavaScript -->
+        </div>
+    </div>
+
+    <div class="add-place-form">
+        <h2>Добавить достопримечательность</h2>
+        <form id="placeForm">
+            <div class="form-group">
+                <label for="city">Город:</label>
+                <select id="city" name="city" required>
+                    <option value="">Выберите город</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Название:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Описание:</label>
+                <textarea id="description" name="description" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Адрес:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Категория:</label>
+                <select id="category" name="category" required>
+                    <option value="">Выберите категорию</option>
+                    <option value="Архитектура">Архитектура</option>
+                    <option value="Музеи">Музеи</option>
+                    <option value="История">История</option>
+                    <option value="Природа">Природа</option>
+                    <option value="Развлечения">Развлечения</option>
+                    <option value="Религия">Религия</option>
+                    <option value="Другое">Другое</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Изображение:</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+
+            <button type="submit">Добавить</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+
+        // Данные о городах
+        const cities = {
+            "Москва": "Столица России, город федерального значения",
+            "Ярославль": "Город в России",
+            "Иваново": "Город в России на берегах реки Уводи",
+            "Владимир": "Город в России",
+            "Калуга": "Город в европейской части России",
+            "Кострома": "Город в России на реке Волге",
+            "Рыбинск": "Второй по величине город в Ярославской области России",
+            "Муром": "Город в России",
+            "Сергиев Посад": "Город в Московской области России",
+            "Дмитров": "Город в России",
+            "Александров": "Город в России",
+            "Шуя": "Город в Ивановской области России",
+            "Гусь-Хрустальный": "Город в России",
+            "Тутаев": "Город областного подчинения в России",
+            "Переславль-Залесский": "Город в Ярославской области России",
+            "Углич": "Город в России",
+            "Касимов": "Город в России",
+            "Ростов Великий": "Город в России",
+            "Юрьев-Польский": "Город в России",
+            "Гороховец": "Город районного подчинения в России",
+            "Калязин": "Город в Тверской области России",
+            "Суздаль": "Город-заповедник во Владимирской области России",
+            "Мышкин": "Город в России",
+            "Боголюбово": "Посёлок в Суздальском районе Владимирской области России",
+            "Палех": "Посёлок городского типа Палехского района Ивановской области Российской Федерации",
+            "Плёс": "Город на Волге",
+            "Кидекша": "Село в Суздальском районе Владимирской области России"
+        };
+
+        // Инициализация страницы
+        function initPage() {
+            // Заполняем сетку городов
+            const citiesGrid = document.getElementById('cities-grid');
+            for (const [city, description] of Object.entries(cities)) {
+                const cityCard = document.createElement('div');
+                cityCard.className = 'city-card';
+                cityCard.innerHTML = `
+                    <div class="city-name">${city}</div>
+                    <div class="city-description">${description}</div>
+                `;
+                cityCard.onclick = () => showPlaces(city);
+                citiesGrid.appendChild(cityCard);
+            }
+
+            // Заполняем выпадающий список городов в форме
+            const citySelect = document.getElementById('city');
+            for (const city of Object.keys(cities)) {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            }
+        }
+
+        // Показать список городов
+        function showCities() {
+            document.getElementById('cities-container').style.display = 'block';
+            document.getElementById('places-container').style.display = 'none';
+        }
+
+        // Показать достопримечательности города
+        async function showPlaces(city) {
+            document.getElementById('cities-container').style.display = 'none';
+            document.getElementById('places-container').style.display = 'block';
+            
+            document.getElementById('city-title').textContent = city;
+            document.getElementById('city-description').textContent = cities[city];
+
+            try {
+                const response = await fetch(`http://localhost:8000/places/?city=${encodeURIComponent(city)}`);
+                const places = await response.json();
+
+                const placesList = document.getElementById('places-list');
+                placesList.innerHTML = '';
+
+                if (places.length === 0) {
+                    placesList.innerHTML = '<p>В этом городе пока нет добавленных достопримечательностей.</p>';
+                } else {
+                    for (const place of places) {
+                        const placeCard = document.createElement('div');
+                        placeCard.className = 'place-card';
+                        placeCard.innerHTML = `
+                            <div class="place-name">${place.name}</div>
+                            <div class="place-info">📍 ${place.address}</div>
+                            <div class="place-info">📝 ${place.description}</div>
+                            <div class="place-info">🏷 ${place.category}</div>
+                            <div class="place-info">⭐ Рейтинг: <span class="rating">${place.rating.toFixed(1)}</span></div>
+                            <div class="rating-buttons">
+                                ${[1,2,3,4,5].map(rating => `
+                                    <button class="rating-button" onclick="ratePlace(${place.id}, ${rating})">
+                                        ${'⭐'.repeat(rating)}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div class="comments">
+                                <h4>Комментарии:</h4>
+                                ${place.comments ? place.comments.map(comment => `
+                                    <div class="comment">${comment.text}</div>
+                                `).join('') : '<p>Пока нет комментариев</p>'}
+                                <div class="comment-form">
+                                    <input type="text" class="comment-input" placeholder="Добавить комментарий" 
+                                           onkeypress="if(event.key === 'Enter') addComment(${place.id}, this.value)">
+                                </div>
+                            </div>
+                        `;
+                        placesList.appendChild(placeCard);
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке достопримечательностей:', error);
+            }
+        }
+
+        // Оценка места
+        async function ratePlace(placeId, rating) {
+            try {
+                const response = await fetch(`http://localhost:8000/places/${placeId}/rate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${tg.initData}`
+                    },
+                    body: JSON.stringify({ rating })
+                });
+
+                if (response.ok) {
+                    // Обновляем отображение места
+                    const cityTitle = document.getElementById('city-title').textContent;
+                    showPlaces(cityTitle);
+                }
+            } catch (error) {
+                console.error('Ошибка при оценке места:', error);
+            }
+        }
+
+        // Добавление комментария
+        async function addComment(placeId, text) {
+            if (!text.trim()) return;
+
+            try {
+                const response = await fetch(`http://localhost:8000/places/${placeId}/comment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${tg.initData}`
+                    },
+                    body: JSON.stringify({ text })
+                });
+
+                if (response.ok) {
+                    // Обновляем отображение места
+                    const cityTitle = document.getElementById('city-title').textContent;
+                    showPlaces(cityTitle);
+                }
+            } catch (error) {
+                console.error('Ошибка при добавлении комментария:', error);
+            }
+        }
+
+        // Обработка отправки формы
+        document.getElementById('placeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('city', document.getElementById('city').value);
+            formData.append('address', document.getElementById('address').value);
+            formData.append('category', document.getElementById('category').value);
+            
+            const imageFile = document.getElementById('image').files[0];
+            if (imageFile) {
+                formData.append('file', imageFile);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/places/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${tg.initData}`
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showMessage('Достопримечательность успешно добавлена!', 'success');
+                    this.reset();
+                    // Обновляем список достопримечательностей, если мы находимся на странице города
+                    const cityTitle = document.getElementById('city-title').textContent;
+                    if (cityTitle) {
+                        showPlaces(cityTitle);
+                    }
+                } else {
+                    const error = await response.json();
+                    showMessage('Ошибка: ' + error.detail, 'error');
+                }
+            } catch (error) {
+                showMessage('Ошибка при отправке данных: ' + error.message, 'error');
+            }
+        });
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+        }
+
+        // Инициализация страницы при загрузке
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html> 
