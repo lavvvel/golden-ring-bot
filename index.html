@@ -4,128 +4,347 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Золотое кольцо России</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&family=Old+Russian+Text&display=swap" rel="stylesheet">
     <style>
-        /* Общие стили */
         body {
-            font-family: 'Roboto Slab', serif;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: var(--tg-theme-bg-color, #f8f4e6); /* Светлый фон */
-            color: var(--tg-theme-text-color, #333); /* Темный текст */
-            line-height: 1.6;
+            background-color: #f5f5f5;
+            color: #333;
         }
-        .header {
+        header {
+            background-color: #d4af37; /* золотой цвет */
+            color: white;
             text-align: center;
-            padding: 20px;
-            background-color: var(--tg-theme-secondary-bg-color, #eaddcd); /* Теплый фон заголовка */
-            border-bottom: 2px solid var(--tg-theme-hint-color, #a0522d); /* Декоративная граница */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            padding: 1rem 0;
         }
-        .header h1 {
+        h1 {
             margin: 0;
-            font-size: 2em;
-            color: var(--tg-theme-text-color, #5a2d0f); /* Цвет заголовка */
-            font-family: 'Old Russian Text', serif; /* Старорусский шрифт для заголовка */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
-        .cities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
+        }
+        .city-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
         }
         .city-card {
-            background-color: var(--tg-theme-bg-color, #fffbf0); /* Фон карточки */
+            background: white;
             border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border: 1px solid var(--tg-theme-hint-color, #d4a07c); /* Граница карточки */
-            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
         .city-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
-        .city-name {
-            font-size: 1.3em;
+        .city-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .city-card-content {
+            padding: 15px;
+        }
+        .city-card h2 {
+            margin-top: 0;
+            color: #d4af37;
+        }
+        .city-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 30px 0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #d4af37;
+            text-decoration: none;
             font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--tg-theme-text-color, #5a2d0f); /* Цвет названия города */
         }
-        .city-description {
-            color: var(--tg-theme-hint-color, #666); /* Цвет описания */
-            font-size: 0.9em;
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Золотое кольцо России</h1>
-    </div>
+    <header>
+        <div class="container">
+            <h1>Золотое кольцо России</h1>
+            <p>Исторические города - сокровищница русской культуры</p>
+        </div>
+    </header>
 
-    <div id="cities-container">
-        <div class="cities-grid" id="cities-grid">
-            <!-- Города будут добавлены через JavaScript -->
+    <div class="container">
+        <div id="main-content">
+            <h2>Города Золотого кольца</h2>
+            <p>Золотое кольцо России — туристический маршрут, проходящий по древним городам Северо-Восточной Руси, в которых сохранились уникальные памятники истории и культуры России, центрам народных ремёсел. Количество и состав городов в конкретном маршруте может варьироваться, но традиционно в Золотое кольцо включают восемь основных городов.</p>
+            
+            <div class="city-list">
+                <div class="city-card" onclick="showCity('sergiev-posad')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/SergievPosad_Overview.jpg/800px-SergievPosad_Overview.jpg" alt="Сергиев Посад">
+                    <div class="city-card-content">
+                        <h2>Сергиев Посад</h2>
+                        <p>Духовный центр России</p>
+                    </div>
+                </div>
+                
+                <div class="city-card" onclick="showCity('pereslavl')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Pereslavl_Zalessky_view_from_Alexandrova_gora.jpg/800px-Pereslavl_Zalessky_view_from_Alexandrova_gora.jpg" alt="Переславль-Залесский">
+                    <div class="city-card-content">
+                        <h2>Переславль-Залесский</h2>
+                        <p>Родина Александра Невского</p>
+                    </div>
+                </div>
+                
+                <div class="city-card" onclick="showCity('rostov')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Rostov_Kremlin_2016.jpg/800px-Rostov_Kremlin_2016.jpg" alt="Ростов Великий">
+                    <div class="city-card-content">
+                        <h2>Ростов Великий</h2>
+                        <p>Жемчужина Ярославской земли</p>
+                    </div>
+                </div>
+                
+                <div class="city-card" onclick="showCity('yaroslavl')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Yaroslavl_Spaso-Preobrazhensky_Monastery_IMG_0791_1724.jpg/800px-Yaroslavl_Spaso-Preobrazhensky_Monastery_IMG_0791_1724.jpg" alt="Ярославль">
+                    <div class="city-card-content">
+                        <h2>Ярославль</h2>
+                        <p>Столица Золотого кольца</p>
+                    </div>
+                </div>
+                
+                <div class="city-card" onclick="showCity('kostroma')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Kostroma_Volga.jpg/800px-Kostroma_Volga.jpg" alt="Кострома">
+                    <div class="city-card-content">
+                        <h2>Кострома</h2>
+                        <p>Ювелирная столица России</p>
+                    </div>
+                </div>
+                
+                <div class="city-card" onclick="showCity('ivanovo')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Ivanovo_-_Palace_of_Arts_%28by_Pashkin%29.jpg/800px-Ivanovo_-_Palace_of_Arts_%28by_Pashkin%29.jpg" alt="Иваново">
+                    <div class="city-card-content">
+                        <h2>Иваново</h2>
+                        <p>Город невест и текстиля</p>
+                    </div>
+                </div>
+                
+                <div class="city-card" onclick="showCity('suzdal')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Suzdal_2016_IMG_2225_2024.jpg/800px-Suzdal_2016_IMG_2225_2024.jpg" alt="Суздаль">
+                    <div class="city-card-content">
+                        <h2>Суздаль</h2>
+                        <p>Город-музей под открытым небом</p>
+                    </div>
+                </div>
+                
+                <div class="city-card" onclick="showCity('vladimir')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Dmitrievsky_Sobor_2016.jpg/800px-Dmitrievsky_Sobor_2016.jpg" alt="Владимир">
+                    <div class="city-card-content">
+                        <h2>Владимир</h2>
+                        <p>Древняя столица Северо-Восточной Руси</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Сергиев Посад -->
+        <div id="sergiev-posad" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('sergiev-posad')">← Назад к списку городов</a>
+            <h2>Сергиев Посад</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/SergievPosad_Overview.jpg/800px-SergievPosad_Overview.jpg" alt="Сергиев Посад" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Сергиев Посад вырос вокруг Троице-Сергиевой лавры, основанной в 1337 году преподобным Сергием Радонежским. Монастырь играл важную роль в политической и духовной жизни России. В 1380 году здесь благословили Дмитрия Донского на Куликовскую битву. В 1744 году монастырь получил статус лавры. Город официально образован в 1782 году указом Екатерины II.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Сергиев Посад включен в Золотое кольцо как:</p>
+            <ul>
+                <li>Главный духовный центр Русской православной церкви</li>
+                <li>Объект Всемирного наследия ЮНЕСКО (Троице-Сергиева лавра)</li>
+                <li>Хранитель уникальных памятников древнерусского зодчества</li>
+                <li>Центр русского православия и паломничества</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Троице-Сергиева лавра, Музей игрушки, Черниговский скит, Историко-художественный музей-заповедник.</p>
+        </div>
+        
+        <!-- Переславль-Залесский -->
+        <div id="pereslavl" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('pereslavl')">← Назад к списку городов</a>
+            <h2>Переславль-Залесский</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Pereslavl_Zalessky_view_from_Alexandrova_gora.jpg/800px-Pereslavl_Zalessky_view_from_Alexandrova_gora.jpg" alt="Переславль-Залесский" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Город основан в 1152 году князем Юрием Долгоруким как крепость на границе Ростово-Суздальского княжества. Здесь в 1220 году родился Александр Невский. В XV-XVI веках город был важным религиозным и культурным центром. В 1688-1693 годах Петр I создал на Плещеевом озере "потешную флотилию", положившую начало российскому флоту.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Переславль-Залесский включен в Золотое кольцо как:</p>
+            <ul>
+                <li>Один из древнейших городов Центральной России</li>
+                <li>Место рождения Александра Невского</li>
+                <li>Колыбель русского военно-морского флота</li>
+                <li>Хранитель уникальных памятников домонгольского зодчества</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Плещеево озеро, Музей-усадьба "Ботик Петра I", Переславский кремль, Никитский монастырь, Синий камень.</p>
+        </div>
+        
+        <!-- Ростов Великий -->
+        <div id="rostov" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('rostov')">← Назад к списку городов</a>
+            <h2>Ростов Великий</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Rostov_Kremlin_2016.jpg/800px-Rostov_Kremlin_2016.jpg" alt="Ростов Великий" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Ростов впервые упоминается в летописи в 862 году, что делает его одним из древнейших городов России. В X-XII веках был столицей Ростово-Суздальского княжества. В XIII веке стал центром Ростовской епархии. В XV-XVII веках переживал экономический и культурный расцвет. Ростовская ярмарка была одной из крупнейших в России.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Ростов Великий включен в Золотое кольцо как:</p>
+            <ul>
+                <li>Один из древнейших городов России (старше Москвы)</li>
+                <li>Обладатель уникального архитектурного ансамбля Ростовского кремля</li>
+                <li>Центр финифтяного промысла</li>
+                <li>Важный духовный и культурный центр Северо-Восточной Руси</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Ростовский кремль, Музей финифти, Спасо-Яковлевский монастырь, Озеро Неро.</p>
+        </div>
+        
+        <!-- Ярославль -->
+        <div id="yaroslavl" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('yaroslavl')">← Назад к списку городов</a>
+            <h2>Ярославль</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Yaroslavl_Spaso-Preobrazhensky_Monastery_IMG_0791_1724.jpg/800px-Yaroslavl_Spaso-Preobrazhensky_Monastery_IMG_0791_1724.jpg" alt="Ярославль" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Ярославль основан в 1010 году князем Ярославом Мудрым. В XIII веке стал столицей самостоятельного княжества. В XVII веке — второй по величине город России и важный торговый центр. В 1612 году во время Смутного времени здесь формировалось народное ополчение Минина и Пожарского. В 1750 году в Ярославле возник первый в России профессиональный театр.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Ярославль включен в Золотое кольцо как:</p>
+            <ul>
+                <li>Один из старейших городов России (основан в 1010 году)</li>
+                <li>Объект Всемирного наследия ЮНЕСКО (исторический центр)</li>
+                <li>Жемчужина волжской архитектуры с уникальными храмами XVII века</li>
+                <li>Важный экономический и культурный центр России</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Спасо-Преображенский монастырь, Церковь Ильи Пророка, Волжская набережная, Ярославский музей-заповедник.</p>
+        </div>
+        
+        <!-- Кострома -->
+        <div id="kostroma" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('kostroma')">← Назад к списку городов</a>
+            <h2>Кострома</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Kostroma_Volga.jpg/800px-Kostroma_Volga.jpg" alt="Кострома" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Кострома основана в 1152 году Юрием Долгоруким. В XIII-XIV веках — центр Костромского удельного княжества. В 1613 году в Ипатьевском монастыре был призван на царство Михаил Романов, что положило начало 300-летнему правлению династии Романовых. В XVIII-XIX веках Кострома стала крупным текстильным и торговым центром.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Кострома включена в Золотое кольцо как:</p>
+            <ul>
+                <li>Колыбель династии Романовых</li>
+                <li>Образец градостроительной планировки XVIII века</li>
+                <li>Центр ювелирного и льняного промыслов</li>
+                <li>Хранитель уникальных памятников церковной и гражданской архитектуры</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Ипатьевский монастырь, Торговые ряды, Музей деревянного зодчества, Ювелирный завод.</p>
+        </div>
+        
+        <!-- Иваново -->
+        <div id="ivanovo" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('ivanovo')">← Назад к списку городов</a>
+            <h2>Иваново</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Ivanovo_-_Palace_of_Arts_%28by_Pashkin%29.jpg/800px-Ivanovo_-_Palace_of_Arts_%28by_Pashkin%29.jpg" alt="Иваново" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Первое упоминание о селе Иваново относится к 1561 году. В XVII-XVIII веках развивалось текстильное производство. В 1871 году село Иваново и Вознесенский Посад объединены в город Иваново-Вознесенск. В 1905 году здесь проходила знаменитая Иваново-Вознесенская стачка. В 1932 году переименован в Иваново. В советское время — "текстильная столица" страны.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Иваново включено в Золотое кольцо как:</p>
+            <ul>
+                <li>Центр русского текстильного производства</li>
+                <li>Образец промышленной архитектуры XIX-XX веков</li>
+                <li>Город с уникальной историей рабочего движения</li>
+                <li>Представитель "красного пояса" Центральной России</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Щудровская палатка, Дом-корабль, Музей ивановского ситца, Музей промышленности и искусства.</p>
+        </div>
+        
+        <!-- Суздаль -->
+        <div id="suzdal" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('suzdal')">← Назад к списку городов</a>
+            <h2>Суздаль</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Suzdal_2016_IMG_2225_2024.jpg/800px-Suzdal_2016_IMG_2225_2024.jpg" alt="Суздаль" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Суздаль впервые упоминается в 1024 году. В XI веке — центр Ростово-Суздальского княжества. В XII веке при Юрии Долгоруком стал столицей княжества. В XIII-XIV веках — центр Суздальско-Нижегородского княжества. В XV веке утратил политическое значение, но остался важным религиозным центром. В 1967 году получил статус города-музея.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Суздаль включен в Золотое кольцо как:</p>
+            <ul>
+                <li>Город-музей под открытым небом</li>
+                <li>Объект Всемирного наследия ЮНЕСКО (в составе Владимиро-Суздальских памятников)</li>
+                <li>Хранитель древнерусской архитектуры (более 200 памятников)</li>
+                <li>Центр русского православия с множеством монастырей</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Суздальский кремль, Музей деревянного зодчества, Покровский монастырь, Спасо-Евфимиев монастырь.</p>
+        </div>
+        
+        <!-- Владимир -->
+        <div id="vladimir" class="city-content hidden">
+            <a href="#" class="back-link" onclick="hideCity('vladimir')">← Назад к списку городов</a>
+            <h2>Владимир</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Dmitrievsky_Sobor_2016.jpg/800px-Dmitrievsky_Sobor_2016.jpg" alt="Владимир" style="width:100%; max-height:400px; object-fit:cover; margin-bottom:20px;">
+            
+            <h3>История города</h3>
+            <p>Владимир основан в 1108 году Владимиром Мономахом. В 1157 году Андрей Боголюбский перенес сюда столицу Ростово-Суздальского княжества. В XII-XIII веках — столица Северо-Восточной Руси. В 1238 году разорен монголо-татарами. В XIV веке уступил политическое лидерство Москве, но сохранил значение как религиозный центр. В 1778 году стал центром Владимирской губернии.</p>
+            
+            <h3>Почему в составе Золотого кольца?</h3>
+            <p>Владимир включен в Золотое кольцо как:</p>
+            <ul>
+                <li>Древняя столица Северо-Восточной Руси</li>
+                <li>Объект Всемирного наследия ЮНЕСКО (Белокаменные памятники Владимира и Суздаля)</li>
+                <li>Хранитель шедевров домонгольского зодчества</li>
+                <li>Важный политический и культурный центр Древней Руси</li>
+            </ul>
+            
+            <h3>Достопримечательности</h3>
+            <p>Успенский собор, Дмитриевский собор, Золотые ворота, Боголюбово, Церковь Покрова на Нерли.</p>
         </div>
     </div>
 
     <script>
-        // Инициализация Telegram WebApp
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-
-        // Данные о городах (те же, что и в боте)
-        const cities = {
-            "Москва": "Столица России, город федерального значения",
-            "Ярославль": "Город в России",
-            "Иваново": "Город в России на берегах реки Уводи",
-            "Владимир": "Город в России",
-            "Калуга": "Город в европейской части России",
-            "Кострома": "Город в России на реке Волге",
-            "Рыбинск": "Второй по величине город в Ярославской области России",
-            "Муром": "Город в России",
-            "Сергиев Посад": "Город в Московской области России",
-            "Дмитров": "Город в России",
-            "Александров": "Город в России",
-            "Шуя": "Город в Ивановской области России",
-            "Гусь-Хрустальный": "Город в России",
-            "Тутаев": "Город областного подчинения в России",
-            "Переславль-Залесский": "Город в Ярославской области России",
-            "Углич": "Город в России",
-            "Касимов": "Город в России",
-            "Ростов Великий": "Город в России",
-            "Юрьев-Польский": "Город в России",
-            "Гороховец": "Город районного подчинения в России",
-            "Калязин": "Город в Тверской области России",
-            "Суздаль": "Город-заповедник во Владимирской области России",
-            "Мышкин": "Город в России",
-            "Боголюбово": "Посёлок в Суздальском районе Владимирской области России",
-            "Палех": "Посёлок городского типа Палехского района Ивановской области Российской Федерации",
-            "Плёс": "Город на Волге",
-            "Кидекша": "Село в Суздальском районе Владимирской области России"
-        };
-
-        // Инициализация страницы
-        function initPage() {
-            const citiesGrid = document.getElementById('cities-grid');
-            for (const [city, description] of Object.entries(cities)) {
-                const cityCard = document.createElement('div');
-                cityCard.className = 'city-card';
-                cityCard.innerHTML = `
-                    <div class="city-name">${city}</div>
-                    <div class="city-description">${description}</div>
-                `;
-                citiesGrid.appendChild(cityCard);
-            }
-            tg.ready();
+        function showCity(cityId) {
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById(cityId).classList.remove('hidden');
+            window.scrollTo(0, 0);
         }
-
-        // Инициализация страницы при загрузке
-        document.addEventListener('DOMContentLoaded', initPage);
+        
+        function hideCity(cityId) {
+            document.getElementById(cityId).classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+        }
     </script>
 </body>
-</html> 
+</html>
