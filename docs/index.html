@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Туристический Бот - Веб-интерфейс</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        .place-card {
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .place-card:hover {
+            transform: translateY(-5px);
+        }
+        #map {
+            height: 500px;
+            margin-bottom: 20px;
+        }
+        .filter-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .premium-features {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .telegram-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Туристический Бот</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showMap()">Карта</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPlaces()">Места</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showAbout()">О проекте</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Фильтры -->
+        <div class="filter-section">
+            <h4>Фильтры</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <select class="form-select" id="placeTypeFilter">
+                        <option value="">Все типы мест</option>
+                        <option value="historical">Исторические</option>
+                        <option value="natural">Природные</option>
+                        <option value="hidden_gem">Скрытые жемчужины</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="audioGuideFilter">
+                        <label class="form-check-label" for="audioGuideFilter">
+                            Только с аудиогидом
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="virtualTourFilter">
+                        <label class="form-check-label" for="virtualTourFilter">
+                            Только с виртуальным туром
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карта -->
+        <div id="map"></div>
+
+        <!-- Список мест -->
+        <div id="places-container" class="row">
+            <!-- Places will be loaded here -->
+        </div>
+
+        <!-- О проекте -->
+        <div id="about-section" style="display: none;">
+            <h2>О проекте</h2>
+            <p>Туристический бот - это ваш персональный гид по интересным местам. Бот поможет вам:</p>
+            <ul>
+                <li>Найти интересные места поблизости</li>
+                <li>Получить информацию о достопримечательностях</li>
+                <li>Прослушать аудиогиды</li>
+                <li>Совершить виртуальный тур</li>
+            </ul>
+            <p>Чтобы начать использовать бота, просто нажмите на кнопку Telegram в правом нижнем углу!</p>
+        </div>
+    </div>
+
+    <!-- Telegram Widget -->
+    <div class="telegram-widget">
+        <a href="https://t.me/your_bot_username" class="btn btn-primary" target="_blank">
+            <i class="fab fa-telegram"></i> Открыть в Telegram
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
